@@ -13,10 +13,10 @@
        # #     #
     #### #    ###
 
-    TXD (FT232RL . #1) ---------------------------> ~DS  (SD . #2)
-    DTR (FT232RL . #2) ---------------------------> MOSI (SD . #3)
-    RTS (FT232RL . #3) ---> DSR (FT232RL . #9) ---> SCLK (SD . #5)
-    CTS (FT232RL . #11) --------------------------> MISO (SD . #7)
+    TXD (FT232RL . #1) ---------------------------> ~DS  (micro-SD . #2)
+    DTR (FT232RL . #2) ---------------------------> MOSI (micro-SD . #3)
+    RTS (FT232RL . #3) ---> DSR (FT232RL . #9) ---> SCLK (micro-SD . #5)
+    CTS (FT232RL . #11) --------------------------> MISO (micro-SD . #7)
 */
     #define  FT232RL  Form2->cp
     void DeviceSelect(bool c) { FT232RL->SetBreak(c); }
