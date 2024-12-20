@@ -8,7 +8,7 @@ extern "C" void xsprintf(char* buff, const char* fmt, ...);
 extern void print(char *text);
 
 /*
-    Данный пример демонстрирует работу драйвера карт SD и
+    Данный пример показывает работу драйвера карт SD и
     файловой системы, совместимой с файловой системой FAT32
 */
 
@@ -24,11 +24,7 @@ MIK32FAT MIK32FAT_;
 
 static bool SD_FS_Config();
 
-#ifdef  ms_VS
-int main()
-#else
 int main_()
-#endif
 {
     char sb[1024];
     xsprintf(sb, "\n\n*** Start ***\n"); print(sb);
@@ -133,56 +129,3 @@ static bool SD_FS_Config()
     xsprintf(sb, "Sectors per cluster: %u\n", unsigned(fs.param.sec_per_clust)); print(sb);
     return true;
 }
-
-#ifdef  ms_VS
-    void print(char* text)
-    {
-        for (int i = 0; text[i]; i++) if (text[i] == 13 || text[i] == 10) text[i] = ' ';
-        printf(text);
-        printf("\r\n");
-    }
-    /*
-        #### #### ###
-        #    #  #  #
-        #### ####  #
-           # #     #
-        #### #    ###
-    */
-    void DeviceSelect(bool c) { /* COM_PORT . SET_BREAK(c) ---> TX */ }
-    void SCLK(bool c)
-    {
-        /// ======= COM_PORT . RTS ( !c ) ;
-        /// while ( COM_PORT . DSR == c ) ;
-    }
-    void MOSI(bool c) { /* == COM_PORT . DTR ( !c ) */ }
-    bool MISO() { return /* ! COM_PORT . CTS */ false; }
-    uint8_t SPI_rw(uint8_t d_wr = 255)
-    {
-        uint8_t d_rd = 0;
-        for (uint8_t i = 0; i < 8; i++)
-        {
-            MOSI((d_wr & (1 << 7)) != 0);
-            SCLK(0); d_rd <<= 1; d_rd |= MISO();
-            SCLK(1); d_wr <<= 1;
-        }
-        MOSI(1);
-        return d_rd;
-    }
-    void HAL_SPI_CS_Enable (SPI_HandleTypeDef* hspi, uint32_t CS_M) { DeviceSelect(true ); }
-    void HAL_SPI_CS_Disable(SPI_HandleTypeDef* hspi)                { DeviceSelect(false); }
-    void HAL_SPI_Exchange(SPI_HandleTypeDef* hspi, uint8_t TransmitBytes[], uint8_t ReceiveBytes[], uint32_t Size, uint32_t Timeout)
-    {
-        uint32_t i = 0;
-        while ( i < Size )
-        {
-            ReceiveBytes[i] = SPI_rw(TransmitBytes[i]);
-            i++;
-        }
-    }
-    void HAL_DelayMs(uint32_t ms)
-    {
-        /// long long delay = get_sys_time() + ms * 1000/* µs */
-        /// while ( delay - get_sys_time() > 0 ) ;
-        /* <...> */
-    }
-#endif
