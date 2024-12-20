@@ -13,6 +13,7 @@
        # #     #
     #### #    ###
 
+    ! FT232RL_SPI.jpg !                             ! micro_SD_SPI.jpg !
     TXD (FT232RL . #1) ---------------------------> ~DS  (micro-SD . #2)
     DTR (FT232RL . #2) ---------------------------> MOSI (micro-SD . #3)
     RTS (FT232RL . #3) ---> DSR (FT232RL . #9) ---> SCLK (micro-SD . #5)
@@ -28,3 +29,4 @@
     void MOSI(bool c) { FT232RL->SetDTR(!c); }
     bool MISO() { return ! FT232RL->Signals().Contains(csCTS); }
 ```
+С помощью приложения *BDS_2006/SDxMIK32.exe* можно испытывать различные SD-карты (предварительно отформатированные в FAT32) на предмет корректной работы в режиме SPI
